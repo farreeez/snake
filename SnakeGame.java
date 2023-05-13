@@ -15,6 +15,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   private Timer timer;
   private int delay = 100;
   private JLabel endGame;
+  private int printGrid = 0;
 
   public SnakeGame() {
     setFocusable(true);
@@ -25,26 +26,12 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   public void startGame() {
     timer = new Timer(delay, this);
     timer.start();
+    printGrid = 0;
   }
 
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-
-    if (gameEnds()) {
-      String youWon = "You Won!";
-      g.setFont(new Font("Verdana",1,80));
-      int textWidth = g.getFontMetrics().stringWidth(youWon);
-      int textHeight = g.getFontMetrics().getHeight();
-      int x = (getWidth() - textWidth)/2;
-      int y = (getHeight() - textHeight)/2 + 50;
-      System.out.println(x +""+ y);
-      g.setColor(Color.gray);
-      g.fillRect((700 - (textWidth + textWidth/4))/2 + 50,(700 - (textHeight*2))/2 + 50,textWidth + textWidth/4,textHeight*2);
-      g.setColor(Color.black);
-      g.drawString(youWon, x, y);
-    }
-
     for (int i = 0; i < numOfCells; i++) {
       g.drawLine(50, originY + sizeOfCell * i, 750, originY + sizeOfCell * i);
       g.drawLine(originX + sizeOfCell * i, 50, originX + sizeOfCell * i, 750);
@@ -66,6 +53,24 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
         snake.getApplePosition()[1] * sizeOfCell + 50,
         sizeOfCell,
         sizeOfCell);
+
+    if (gameEnds()) {
+      String endGame = "You Lost!";
+      if (snake.getPosition().size() == 802) {
+        endGame = "You Won!";
+      }
+      g.setFont(new Font("Verdana", 1, 80));
+      int textWidth = g.getFontMetrics().stringWidth(endGame);
+      int textHeight = g.getFontMetrics().getHeight();
+      int x = (700 - textWidth) / 2 + 50;
+      int y = (700 - textHeight) / 2 + 25 + textHeight;
+      System.out.println(x + "" + y);
+      g.setColor(Color.gray);
+      g.fillRect((700 - (textWidth + textWidth / 4)) / 2 + 50, (700 - (textHeight * 2)) / 2 + 50,
+          textWidth + textWidth / 4, textHeight * 2);
+      g.setColor(Color.black);
+      g.drawString(endGame, x, y);
+    }
   }
 
   @Override
@@ -90,12 +95,14 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     frame.add(board);
     frame.pack();
     frame.setVisible(true);
+
     board.startGame();
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     snake.move();
+    snake.eatsApple();
     this.paintComponent(getGraphics());
     if (gameEnds()) {
       timer.stop();
@@ -103,7 +110,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   }
 
   private boolean gameEnds() {
-    return true;
+    return false;
   }
 
   @Override
