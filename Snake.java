@@ -6,29 +6,37 @@ public class Snake {
   private int direction;
   private int[] applePosition = { 13, 10 };
   private ArrayList<Integer> positions = new ArrayList<>(Arrays.asList(-2, -2));
+  int[] pp = { 1, 2 };
+  int[] pp1 = { 1, 3 };
+  int[] pp2 = { 1, 4 };
+  private ArrayList<int[]> penis = new ArrayList<>(Arrays.asList(pp1, pp2, pp));
 
   public Snake() {
     this.direction = 1;
     this.positions.addAll(Arrays.asList(4, 10, 3, 10));
   }
 
-  private ArrayList<int[]> changeApplePosition(){
+  private ArrayList<int[]> changeApplePosition() {
     ArrayList<int[]> availablePositions = new ArrayList<>();
 
-    if(this.positions.size() == 802){
+    if (this.positions.size() == 802) {
       return availablePositions;
     }
 
-    for(int i = 0; i < 20; i++){
-      for(int j = 0; j < 20; j ++){
-        int[] position = {i,j};
+    for (int i = 0; i < 20; i++) {
+      for (int j = 0; j < 20; j++) {
+        int[] position = { i, j };
         availablePositions.add(position);
       }
     }
-    
+
     for (int i = 0; i < this.positions.size() / 2 - 1; i++) {
-      int[] removePosition = {this.positions.get(i),this.positions.get(i+1)};
-      availablePositions.remove(removePosition);
+      int j = (i + 1) * 2;
+      for(int k = 0; k < availablePositions.size(); k++){
+        if(availablePositions.get(k)[0] == this.positions.get(j) && availablePositions.get(k)[1] == this.positions.get(j+1)){
+          availablePositions.remove(k);
+        }
+      }
     }
     return availablePositions;
   }
@@ -48,7 +56,7 @@ public class Snake {
           this.positions.add(this.positions.get(this.positions.size() - 2));
         }
       }
-      
+
       ArrayList<int[]> availablePositions = this.changeApplePosition();
       Random random = new Random();
       int[] newApplePosititon = availablePositions.get(random.nextInt(availablePositions.size()));
