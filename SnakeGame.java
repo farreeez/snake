@@ -3,7 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import javax.swing.*;
 
 public class SnakeGame extends JPanel implements KeyListener, ActionListener {
@@ -92,7 +91,6 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     frame.add(board);
     frame.pack();
     frame.setVisible(true);
-
     board.startGame();
   }
 
@@ -100,7 +98,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   public void actionPerformed(ActionEvent e) {
     snake.move();
     snake.eatsApple();
-    this.paintComponent(getGraphics());
+    repaint();
     if (gameEnds()) {
       timer.stop();
     }
