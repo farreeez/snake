@@ -6,10 +6,6 @@ public class Snake {
   private int direction;
   private int[] applePosition = { 13, 10 };
   private ArrayList<Integer> positions = new ArrayList<>(Arrays.asList(-2, -2));
-  int[] pp = { 1, 2 };
-  int[] pp1 = { 1, 3 };
-  int[] pp2 = { 1, 4 };
-  private ArrayList<int[]> penis = new ArrayList<>(Arrays.asList(pp1, pp2, pp));
 
   public Snake() {
     this.direction = 1;

@@ -3,7 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import javax.swing.*;
 
 public class SnakeGame extends JPanel implements KeyListener, ActionListener {
@@ -21,6 +20,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     setPreferredSize(new Dimension(800, 800));
   }
 
+  // starts a timer that excecutes this code every 100ms
   public void startGame() {
     timer = new Timer(delay, this);
     timer.start();
@@ -29,6 +29,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
+    // paints the grid
     for (int i = 0; i < numOfCells; i++) {
       g.drawLine(50, originY + sizeOfCell * i, 750, originY + sizeOfCell * i);
       g.drawLine(originX + sizeOfCell * i, 50, originX + sizeOfCell * i, 750);
@@ -36,6 +37,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
 
     if (gameEnds()) {
       String endGame = "You Lost!";
+      // if the snake filled the whole grid you win the game
       if (snake.getPosition().size() > 801) {
         endGame = "You Won!";
       }
@@ -52,6 +54,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
       return;
     }
 
+    // draws the snake
     g.setColor(Color.gray);
     for (int i = 0; i < snake.getPosition().size() / 2 - 1; i++) {
       int j = (i + 1) * 2;
@@ -62,6 +65,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
           sizeOfCell);
     }
 
+    // draws the apple
     g.setColor(Color.red);
     g.fillRect(
         snake.getApplePosition()[0] * sizeOfCell + 50,
@@ -70,6 +74,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
         sizeOfCell);
   }
 
+  // movement code
   @Override
   public void keyPressed(KeyEvent move) {
     int keyCode = move.getKeyCode();
@@ -84,6 +89,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     }
   }
 
+  // sets up the window for the game
   public static void main(String[] args) {
     JFrame frame = new JFrame("Big Snake Good");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,7 +98,6 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     frame.add(board);
     frame.pack();
     frame.setVisible(true);
-
     board.startGame();
   }
 
@@ -100,22 +105,25 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   public void actionPerformed(ActionEvent e) {
     snake.move();
     snake.eatsApple();
-    this.paintComponent(getGraphics());
+    repaint();
     if (gameEnds()) {
       timer.stop();
     }
   }
 
   private boolean gameEnds() {
+    // if the player wins and the snake has filled the entire grid return true
     if (snake.getPosition().size() > 801) {
       return true;
     }
 
+    // if the snake touched the board return true
     if (snake.getPosition().get(2) > 19 || snake.getPosition().get(2) < 0 || snake.getPosition().get(3) < 0
         || snake.getPosition().get(3) > 19) {
           return true;
     }
 
+    // if the snake ate itself return true
     int length = snake.getPosition().size() / 2 - 1;
     for (int i = 0; i < length; i++) {
       int l = (i + 1) * 2;
