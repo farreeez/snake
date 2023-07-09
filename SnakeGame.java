@@ -13,6 +13,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
   private Snake snake = new Snake();
   private Timer timer;
   private int delay = 100;
+  private boolean done = true;
 
   public SnakeGame() {
     setFocusable(true);
@@ -107,7 +108,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     snake.eatsApple();
     repaint();
     if (gameEnds()) {
-      timer.stop();
+      done = true;
     }
   }
 
@@ -120,7 +121,7 @@ public class SnakeGame extends JPanel implements KeyListener, ActionListener {
     // if the snake touched the board return true
     if (snake.getPosition().get(2) > 19 || snake.getPosition().get(2) < 0 || snake.getPosition().get(3) < 0
         || snake.getPosition().get(3) > 19) {
-          return true;
+      return true;
     }
 
     // if the snake ate itself return true
