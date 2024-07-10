@@ -14,3 +14,4 @@ Make sure you have the JDK installed and properly configured on your system, as 
 ### Executing program
 
 * Simply run the Snake.java file and enjoy :).
+* You can control the snake using the arrow keys.
